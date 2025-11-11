@@ -1,0 +1,57 @@
+<template>
+    <lightning-card icon-name="custom:custom11" class="slds-p-around_medium">
+        <div slot="title">
+            Manage Account of Org 2
+        </div>
+
+        <div class="slds-p-around_medium">
+            <lightning-input 
+                label="Account Name" 
+                placeholder="Astrea It" 
+                type="text" 
+                onchange={accNameHandler}>
+            </lightning-input>
+
+            <lightning-combobox
+                name="rating"
+                label="Select Account Rating"
+                value={selectedRating}
+                placeholder="Select Rating"
+                options={ratingOptions}
+                onchange={handleRating}>
+            </lightning-combobox>
+
+            <lightning-combobox
+                name="type"
+                label="Type"
+                value={selectedType}
+                placeholder="Select Type"
+                options={typeOptions}
+                onchange={handleType}>
+            </lightning-combobox>
+
+            <lightning-input 
+                label="Phone Number" 
+                type="number" 
+                placeholder="9876543210"
+                onchange={accPhoneHandler}>
+            </lightning-input>
+
+            <lightning-button 
+                label="Insert Account" 
+                variant="success" 
+                onclick={insertAccount}>
+            </lightning-button>
+        </div>
+        <div class="slds-p-around_medium">
+            <lightning-input label="Enter Account Id" type="text" placeholder="001v67vhsgdjdfsQAV"></lightning-input>
+            <lightning-button label="Get Account" onclick={getAccount}></lightning-button>
+        </div>
+        <template if:true={accountRecord}>
+            <p><strong>Name: </strong>{accountRecord.Name}</p>
+            <p><strong>Phone: </strong>{accountRecord.Phone}</p>
+            <p><strong>Type: </strong>{accountRecord.Type}</p>
+            <p><strong>Rating: </strong>{accountRecord.Rating}</p>
+        </template>
+    </lightning-card>
+</template>
