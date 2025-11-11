@@ -1,0 +1,47 @@
+public with sharing class integrationClass {
+    
+    @AuraEnabled
+    @Future(callout = true)
+    public static void insertAccount(String name, String type, String rating, String phone) {
+
+        try {
+
+            Map<String, String> accMap  = new Map<String, String>();
+            accMap.put('Name', name);
+            accMap.put('Type', type);
+            accMap.put('Rating', rating);
+            accMap.put('Phone', phone);
+
+            String jsonBody = JSON.serialize(accMap);
+
+            Http http = new Http();
+            HttpRequest request = new HttpRequest();
+            request.setMethod('POST');
+            request.setEndpoint('callout:namedCredforOrg2/services/data/v65.0/sobjects/Account');
+            request.setHeader('Content-Type', 'application/json');
+            request.setBody(jsonBody);
+
+            HttpResponse response = http.send(request);
+
+            System.debug('Response Status: ' + response.getStatus());
+            System.debug('Response Body: ' + response.getBody());
+
+            String message = '';
+            if (response.getStatusCode() == 201) {
+                message = 'Insertion Successful';
+            } else {
+                message = 'Error: ' + response.getStatusCode();
+            }
+
+            System.debug('Message: ' + message);
+
+        } catch (Exception e) {
+            System.debug('Error in insertAccount: ' + e.getMessage());
+        }
+    }
+    @AuraEnabled
+    public static Account accountGet(String accIds){
+        Account acc  = [Select Id, Name, Phone, Industry, Rating, Type From Account Where Id=:accIds];
+        return acc;
+    }
+}
